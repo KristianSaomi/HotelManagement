@@ -150,7 +150,7 @@ public class HotelManagement2 {
             try {
 
                 System.out.println("");
-                System.out.println("1. Customer Details"); //SQL eller txt men txt är litle fucked up
+                System.out.println("1. Customer Details"); //SQL eller txt 
                 System.out.println("2. Search Customer Details"); //Hitta kunds "något" ..
                 System.out.println("3. Update package, nights, roomtype"); //Klar diskutera rommtype
                 System.out.println("4. Check out a customer "); //Kvitto klar
