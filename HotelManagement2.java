@@ -22,7 +22,7 @@ public class HotelManagement2 {
 
     private static final String url = "jdbc:mysql://localhost:3306/HotelManagementTest?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String user = "root";
-    private static final String password = "Elzouki12!";
+    private static final String password = "//Code for sql!";
     private static Statement st = null;
     private static ResultSet rs = null;
     private static PreparedStatement pst = null;
