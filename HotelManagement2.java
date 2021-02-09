@@ -22,7 +22,7 @@ public class HotelManagement2 {
 
     private static final String url = "jdbc:mysql://localhost:3306/HotelManagementTest?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String user = "root";
-    private static final String password = "//Code for sql!";
+    private static final String password = "//SQL password";
     private static Statement st = null;
     private static ResultSet rs = null;
     private static PreparedStatement pst = null;
@@ -36,6 +36,8 @@ public class HotelManagement2 {
     static int packageId;
 
     static boolean exit = false;
+
+    static int numberOfItems;
 
     static List<Customer> customer = new ArrayList<>();
     public static ArrayList<Customer> customerList = new ArrayList<>();
@@ -58,9 +60,9 @@ public class HotelManagement2 {
     public static void main(String[] args) {
         loadAndSave.readFromFile();
         System.out.println(customer);
-        music.bgMusic();
+        //music.bgMusic();
         hotel();
-        try ( Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
 
             System.out.println("Connection succeeded!");
 
@@ -69,7 +71,7 @@ public class HotelManagement2 {
             mainMenu();
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("Something went wrong, please try again!");
+            System.out.println(red + "Something went wrong, please try again!" + reset);
         }
     }
 
@@ -81,11 +83,11 @@ public class HotelManagement2 {
                 employee.add(new Employee("Saral Zamani", "Saral@HotelParadise.com", "2"));
                 employee.add(new Employee("Mohamed Abdel Monem", "Mohamed@HotelParadise.com", "3"));
 
-                System.out.println(black + "Welcome to Hotel Paradise" + reset);
-                System.out.println(blue + "Would you like to sign in as employee or customer?\n" + reset);
-                System.out.println("Press 1. for employee \nPress 2. for customer");
-                System.out.println(red + "Press 3. for music panel " + red);
-                System.out.println("Press 0. to exit");
+                System.out.println(lightBlue + "Welcome to Hotel Paradise\n" + reset);
+                System.out.println(yellow + "Would you like to sign in as employee or customer?\n" + reset);
+                System.out.println(yellow + "Press 1. for employee \nPress 2. for customer" + reset);
+                System.out.println(yellow + "Press 3. for music panel " + reset);
+                System.out.println(red + "Press 0. to exit" + reset);
                 int signIn = sc.nextInt();
                 sc.nextLine();
 
@@ -93,8 +95,8 @@ public class HotelManagement2 {
                     case 1:
                         printEmpolyees(employee);
 
-                        System.out.println("Log in:");
-                        System.out.println("Enter E-mail:");
+                        System.out.println(lightBlue + "Log in:" + reset);
+                        System.out.println("Please enter your e-mail:");
                         email = sc.nextLine();
                         System.out.println("Please enter your password");
                         passWord = sc.nextLine();
@@ -102,43 +104,42 @@ public class HotelManagement2 {
                         boolean yesOrNo = employee.stream().anyMatch(HotelManagement2::emailCheck);
                         if (yesOrNo == true) {
                             // employee.stream().filter(o -> o.getEmail().equalsIgnoreCase(email))
-                            //       .forEach(p -> System.out.println(blue + "Hi " + p.getName() + blue));
+                            //       .forEach(p -> System.out.println(lightBlue + "Hi " + p.getName() + reset));
                             employee.stream().filter(o -> o.getEmail().equalsIgnoreCase(email)).filter(o -> o.getPassword().equals(passWord))
-                                    .forEach(p -> System.out.println(blue + "Welcome " + p.getName() + " you are now logged in" + blue));
+                                    .forEach(p -> System.out.println(lightBlue + "Welcome " + p.getName() + " you are now logged in" + reset));
                             employeeMenu();
                         } else {
-                            System.err.println(red + "Wrong E-mail or password!" + reset);
-                            System.out.println("Please try again");
+                            System.out.println(red + "Wrong E-mail or password!\nPlease try again!" + reset);
 //                        mainMenu();
                         }
                         break;
 
                     case 2:
-                        System.out.println("Welcome to Hotel Paradise!");
+                        System.out.println(lightBlue + "As a Guest you can enter!" + reset);
                         customerMenu();
                         break;
                     case 3:
-                        System.out.println(blue + "\nDo you want to 'pause' or 'resume' the music?\n" + reset);
+                        System.out.println(lightBlue + "\nDo you want to 'pause' or 'resume' the music?\n" + reset);
                         String pauseorResume = sc.nextLine();
                         if ("pause".equalsIgnoreCase(pauseorResume)) {
                             music.stopPlaying();
-                            System.out.println(blue + "\nMusic is paused\n" + reset);
+                            System.out.println(lightBlue + "\nMusic is paused\n" + reset);
 //                        mainMenu();
                         } else if ("resume".equalsIgnoreCase(pauseorResume)) {
                             music.startPlaying();
-                            System.out.println(blue + "\nMusic is now playing\n");
+                            System.out.println(lightBlue + "\nMusic is now playing\n" + reset);
 //                        mainMenu();
                         } else {
-                            System.out.println("not a valid option");
+                            System.out.println(red + "not a valid option" + reset);
 //                        mainMenu();
                         }
                         break;
                     case 0:
-                        System.out.println("See you next time!");
+                        System.out.println(green+"See you next time!\n\n\n\n"+reset);
                         exit = true;
                 }
             } catch (InputMismatchException e) {
-                System.err.println("Something went wrong");
+                System.out.println(red + "Something went wrong" + reset);
                 sc.next();
                 mainMenu();
             }
@@ -150,13 +151,13 @@ public class HotelManagement2 {
             try {
 
                 System.out.println("");
-                System.out.println("1. Customer Details"); //SQL eller txt 
-                System.out.println("2. Search Customer Details"); //Hitta kunds "något" ..
-                System.out.println("3. Update package, nights, roomtype"); //Klar diskutera rommtype
-                System.out.println("4. Check out a customer "); //Kvitto klar
-                System.out.println("5. Book a room for a customer"); //Method reference
-                System.out.println("6. Order Food for Particular Room"); //Method reference
-                System.out.println("7. Registered customers");
+                System.out.println(yellow + "1. Customer Details" + reset); //SQL eller txt men txt är litle fucked up
+                System.out.println(yellow + "2. Search Customer Details" + reset); //Hitta kunds "något" ..
+                System.out.println(yellow + "3. Update package, nights, roomtype" + reset); //Klar diskutera rommtype
+                System.out.println(yellow + "4. Check out a customer " + reset); //Kvitto klar
+                System.out.println(yellow + "5. Book a room for a customer" + reset); //Method reference
+                System.out.println(yellow + "6. Order Food for Particular Room" + reset); //Method reference
+                System.out.println(yellow + "7. Registered customers" + reset);
                 System.out.println(red + "0. Stamp out" + reset); //Klart
 
                 int empChoice = sc.nextInt();
@@ -178,62 +179,61 @@ public class HotelManagement2 {
 //                        employeeMenu();
                         break;
                     case 3:
-                try {
+                        try {
 
-                        //Uppatera packet och antal nätter, hotelrumstyp -->
-                        select("test3");
-                        System.out.println("\nWhat is your customerID");
-                        int customerID = sc.nextInt();
-                        sc.nextLine();
-                        System.out.println("What would you like to change\n1. Nights\n2. Room type\n3. Package");
-                        int var = sc.nextInt();
-                        sc.nextLine();
-                        switch (var) {
-                            case 1:
-                                System.out.println("How many nights would you like to stay for?");
-                                int nights = sc.nextInt();
-                                sc.nextLine();
-                                pst = st.getConnection().prepareStatement("UPDATE bookings SET numberofnight = ? WHERE customerid = ?");
+                            //Uppatera packet och antal nätter, hotelrumstyp -->
+                            select("test3");
+                            System.out.println("\nWhat is your customerID");
+                            int customerID = sc.nextInt();
+                            sc.nextLine();
+                            System.out.println("What would you like to change\n1. Nights\n2. Room type\n3. Package");
+                            int var = sc.nextInt();
+                            sc.nextLine();
+                            switch (var) {
+                                case 1:
+                                    System.out.println("How many nights would you like to stay for?");
+                                    int nights = sc.nextInt();
+                                    sc.nextLine();
+                                    pst = st.getConnection().prepareStatement("UPDATE bookings SET numberofnight = ? WHERE customerid = ?");
 
-                                pst.setInt(1, nights);
-                                pst.setInt(2, customerID);
-                                pst.executeUpdate();
-                                System.out.println(blue + "Number of nights for customer: " + customerID + " is now updated" + reset);
-                                break;
-                            case 2:
-                                System.out.println("What room would you like to change to?");
-                                select("test2");
-                                int room = sc.nextInt();
-                                sc.nextLine();
-                                pst = st.getConnection().prepareStatement("UPDATE bookings SET roomnumber= ? WHERE customerid = ?");
+                                    pst.setInt(1, nights);
+                                    pst.setInt(2, customerID);
+                                    pst.executeUpdate();
+                                    System.out.println(green + "Number of nights for customer: " + customerID + " is now updated" + reset);
+                                    break;
+                                case 2:
+                                    System.out.println("What room would you like to change to?");
+                                    select("test2");
+                                    int room = sc.nextInt();
+                                    sc.nextLine();
+                                    pst = st.getConnection().prepareStatement("UPDATE bookings SET roomnumber= ? WHERE customerid = ?");
 
-                                pst.setInt(1, room);
-                                pst.setInt(2, customerID);
-                                pst.executeUpdate();
+                                    pst.setInt(1, room);
+                                    pst.setInt(2, customerID);
+                                    pst.executeUpdate();
 
-                                System.out.println("Room for customer: " + customerID + " is updated");
-                                break;
-                            case 3:
-                                System.out.println("Which package would you like to change to?");
-                                select("Package");
-                                int packageid = sc.nextInt();
-                                sc.nextLine();
-                                pst = st.getConnection().prepareStatement("UPDATE bookings SET packageid= ? WHERE customerid = ?");
+                                    System.out.println("Room for customer: " + customerID + " is updated");
+                                    break;
+                                case 3:
+                                    System.out.println(green + "Which package would you like to change to?" + reset);
+                                    select("Package");
+                                    int packageid = sc.nextInt();
+                                    sc.nextLine();
+                                    pst = st.getConnection().prepareStatement("UPDATE bookings SET packageid= ? WHERE customerid = ?");
 
-                                pst.setInt(1, packageid);
-                                pst.setInt(2, customerID);
-                                pst.executeUpdate();
-                                System.out.println("Package for customer " + customerID + " is now updated!");
-                                break;
-                        }
+                                    pst.setInt(1, packageid);
+                                    pst.setInt(2, customerID);
+                                    pst.executeUpdate();
+                                    System.out.println(green + "Package for customer " + customerID + " is now updated!" + reset);
+                                    break;
+                            }
 //                        employeeMenu();
-                    } catch (InputMismatchException e) {
-                        System.out.println("Your choice is invalid");
-                        sc.next();
-
-                        employeeMenu();
-                    }
-                    break;
+                        } catch (InputMismatchException e) {
+                            System.out.println(red + "Your choice is invalid" + reset);
+                            sc.next();
+                            employeeMenu();
+                        }
+                        break;
                     case 4:
                         //Radera en kund och dennes bokning, be kunden betala först.
                         printTable("select * from test3");
@@ -257,22 +257,22 @@ public class HotelManagement2 {
 //                        employeeMenu();
                         break;
                     case 7:
-                        System.out.println(reset + "All customers who have been registered\n");
+                        System.out.println(purple + "All customers who have been registered\n" + reset);
                         System.out.println(customer);
 //                        employeeMenu();
                         break;
                     case 0:
                         LocalDateTime stampOut = LocalDateTime.now();
-                        System.out.println(blue + "You stamped out: " + stampOut + blue);
+                        System.out.println(lightBlue + "You stamped out: " + stampOut + reset);
                         long between = ChronoUnit.SECONDS.between(stampIn, stampOut);
-                        System.out.println(blue + "Great you worked " + between + " seconds \n" + blue);
+                        System.out.println(lightBlue + "Great you worked " + between + " seconds \n" + reset);
                         System.out.println("Good job!");
                         mainMenu();
                         exit = true;
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid choice");
+                System.out.println(red + "Invalid choice" + reset);
                 sc.next();
                 employeeMenu();
             }
@@ -283,11 +283,11 @@ public class HotelManagement2 {
         while (!exit) {
             try {
                 System.out.println("");
-                System.out.println("1. Display room details"); //Klar
-                System.out.println("2. Display room availability"); //Klar
-                System.out.println("3. Checkin");  //Klart
-                System.out.println("4. Order food"); //Klart dunder
-                System.out.println("5. Checkout");  //Klart dunder
+                System.out.println(yellow + "1. Display room details" + reset); //Klar
+                System.out.println(yellow + "2. Display room availability" + reset); //Klar
+                System.out.println(yellow + "3. Checkin" + reset);  //Klart
+                System.out.println(yellow + "4. Order food" + reset); //Klart dunder
+                System.out.println(yellow + "5. Checkout" + reset);  //Klart dunder
                 System.out.println(red + "0. Exit" + reset);
 
                 int cusChoice = sc.nextInt();
@@ -298,7 +298,7 @@ public class HotelManagement2 {
                         roomType();
                         break;
                     case 2:
-                        System.out.println(blue + "These rooms are avaible right now!" + reset);
+                        System.out.println(lightBlue + "These rooms are available right now!" + reset);
                         select("test2");
                         break;
                     case 3:
@@ -308,11 +308,11 @@ public class HotelManagement2 {
                         if ("yes".equalsIgnoreCase(bookARoom)) {
                             checkIn();
                         } else {
-                            System.out.println(blue + "We hope you come back another time!" + blue);
+                            System.out.println(lightBlue + "We hope you come back another time!" + reset);
                         }
                         break;
                     case 4:
-                        System.out.println(blue + "This is our food menu: " + reset);
+                        System.out.println(lightBlue + "This is our food menu: " + reset);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                Scanner lol = new Scanner(System.in);
 //
@@ -332,7 +332,7 @@ public class HotelManagement2 {
 //                    fw.write(f);
 //                    fw.close();
 //                } catch (IOException IOE) {
-//                    System.err.println("Error");
+//                    System.out.println(red+"Error"+reset);
 //                }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
                         foodMenu();
@@ -344,11 +344,11 @@ public class HotelManagement2 {
                             orderFood();
 
                         } else {
-                            System.out.println("Okay! Kitchen closes 10:00 PM");
+                            System.out.println(lightBlue + "Okay! Kitchen closes 10:00 PM" + reset);
                         }
                         break;
                     case 5:
-                        System.out.println("Hope you are enjoying stay at Hotel Paradise!");
+                        System.out.println(purple + "Hope you are enjoying stay at Hotel Paradise!" + reset);
 
                         System.out.println("Please enter room number");
                         int roomnumber = sc.nextInt();
@@ -363,16 +363,15 @@ public class HotelManagement2 {
                             checkout(roomnumber);
                             System.out.println("\nThanks for staying at Hotel Paradise!");
                         }
-
                         break;
                     case 0:
-                        System.out.println(blue + "Thanks for visiting, welcome back!" + reset);
+                        System.out.println(lightBlue + "Thanks for visiting, welcome back!" + reset);
                         mainMenu();
                         exit = true;
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Something went wrong!");
+                System.out.println(red + "Something went wrong!" + reset);
                 sc.next();
                 customerMenu();
             }
@@ -387,55 +386,63 @@ public class HotelManagement2 {
 
         pst.executeUpdate();
         st.executeUpdate("delete from bookings where roomNumber =" + roomnumber + ";");
-        System.out.println(blue + "Checkout is now complete" + reset);
+        System.out.println(lightBlue + "Checkout is now complete" + reset);
 
     }
 
     public static <T extends Employee> void printEmpolyees(List<T> employees) {
-        System.out.println(blue + "Registered employees: ");
+        System.out.println(lightBlue + "Registered employees: " + reset);
         for (T Employee : employees) {
             Employee.callEmployees();
         }
     }
-//java.sql.SQLIntegrityConstraintViolationException
 
     private static void checkIn() throws SQLException {
         try {
+
             select("test2");
-            System.out.println(blue + "\nWhich room do you wish to have?" + reset);
+            System.out.println(lightBlue + "\nWhich room do you wish to have?" + reset);
             roomNumber = sc.nextInt();
             sc.nextLine();
-            if (roomNumber <= 199 || roomNumber >= 212) {
+            while (roomNumber <= 199 || roomNumber >= 212) {
                 System.out.println(red + "\nYou have choosen a invalid room number\nPlease try again" + reset);
-                checkIn();
+                System.out.println(lightBlue + "\nWhich room do you wish to have?" + reset);
+                roomNumber = sc.nextInt();
+                sc.nextLine();
             }
             select("Package");
 
-            System.out.println(blue + "\nWhich package do you wish to have?" + reset);
+            System.out.println(lightBlue + "\nWhich package do you wish to have?" + reset);
             packageId = sc.nextInt();
             sc.nextLine();
-            if (packageId <= 0 || packageId >= 4) {
+            while (packageId <= 0 || packageId >= 4) {
                 System.out.println(red + "\nYou have choosen a invalid package number\nPlease try again" + reset);
-                checkIn();
+                System.out.println(lightBlue + "\nWhich package do you wish to have?" + reset);
+                packageId = sc.nextInt();
+                sc.nextLine();
             }
 
-            System.out.println(blue + "How many persons will you be?" + reset);
+            System.out.println(lightBlue + "How many persons will you be?" + reset);
             int totalpersons = sc.nextInt();
             sc.nextLine();
-            if (totalpersons <= 0) {
+            while (totalpersons <= 0) {
                 System.out.println(red + "\nMust be atleast 1 person\nPlease try again" + reset);
-                checkIn();
+                System.out.println(lightBlue + "How many persons will you be?" + reset);
+                totalpersons = sc.nextInt();
+                sc.nextLine();
             }
 
-            System.out.println(blue + "How many nights do you wish to stay?" + reset);
+            System.out.println(lightBlue + "How many nights do you wish to stay?" + reset);
             hmdays = sc.nextInt();
             sc.nextLine();
-            if (hmdays <= 0) {
-                System.out.println(red + "Have to be atleast 1 night\nPlease try again" + reset);
-                checkIn();
+            while (hmdays <= 0) {
+                System.out.println(red + "\nHave to be atleast 1 night\nPlease try again" + reset);
+                System.out.println(lightBlue + "How many nights do you wish to stay?" + reset);
+                hmdays = sc.nextInt();
+                sc.nextLine();
             }
 
-            System.out.println(blue + "\nEnter personal info to confirm the reservation" + reset);
+            System.out.println(lightBlue + "\nEnter personal info to confirm the reservation" + reset);
 
             System.out.print("First name: ");
             String fnamn = sc.nextLine();
@@ -473,7 +480,7 @@ public class HotelManagement2 {
             System.out.println(red + "\nThe room you have chosen haven't been cleaned up yet, please try again" + reset);
             invalidRoom();
         } catch (Exception e) {
-            System.out.println("Something went wrong, please try again.");
+            System.out.println(red + "Something went wrong, please try again." + reset);
         }
     }
 
@@ -488,16 +495,19 @@ public class HotelManagement2 {
 
             String roomNumbersCustomerId = rs.getString("customerId");
             order(roomNumbersCustomerId);
-            System.out.println("Would you like to add more items to your current order? ");
-            System.out.println("\nEnter yes/no");
-            String orderMore = sc.nextLine();
-            if ("yes".equalsIgnoreCase(orderMore)) {
-                order(roomNumbersCustomerId);
+            if (numberOfItems > 0) {
+                System.out.println("Would you like to add more items to your current order? ");
+                System.out.println("\nEnter yes/no");
+                String orderMore = sc.nextLine();
+                if ("yes".equalsIgnoreCase(orderMore)) {
+                    order(roomNumbersCustomerId);
+                }
+                System.out.println(lightBlue + "Thank you for your order! Your food is on the way." + reset);
+            } else {
+                System.out.println(red + "Choice is not valid, please try again!" + reset);
             }
-            System.out.println(blue + "Thank you for your order! Your food is on the way." + reset);
-
         } catch (Exception e) {
-            System.err.println("Something went wrong, please try again later!");
+            System.out.println(red + "Choice is not valid, please try again!" + reset);
         }
 
     }
@@ -506,7 +516,7 @@ public class HotelManagement2 {
 
         try {
             System.out.println("How many items would you like to add to your order? ");
-            int numberOfItems = sc.nextInt();
+            numberOfItems = sc.nextInt();
             sc.nextLine();
             for (int i = 1; i <= numberOfItems; i++) {
                 System.out.println("Which item would you like to purchase?");
@@ -616,7 +626,7 @@ public class HotelManagement2 {
                 System.out.println(red + "\nTry with a room number from the display!" + reset);
             }
 
-//            System.out.println(blue + "\nWhich room do you wish to have?" + reset);
+//            System.out.println(lightBlue + "\nWhich room do you wish to have?" + reset);
 //            roomNumber = sc.nextInt();
 //            sc.nextLine();
 //            if (roomNumber <= 199 || roomNumber >= 212) {
@@ -629,17 +639,17 @@ public class HotelManagement2 {
     }
 
     private static void welcomeDrink() throws SQLException {
-        System.out.println(blue + "Thanks!\nYou have now registered and confirmed the booking" + reset);
-        rs = st.executeQuery("SELECT * FROM bookings where customerId =" +customerId+ ";");
+        System.out.println(lightBlue + "Thanks!\nYou have now registered and confirmed the booking" + reset);
+        rs = st.executeQuery("SELECT * FROM bookings where customerId =" + customerId + ";");
         rs.next();
         String roomNumberForWelcome = rs.getString("roomNumber");
-        System.out.println(blue+"Your room number is: " + roomNumberForWelcome+reset);
+        System.out.println(lightBlue + "Your room number is: " + roomNumberForWelcome + reset);
         System.out.println(green + "Hotel Paradise offers a free welcome drink!" + reset + "\n");
-        System.out.println(red + "\\    /" + red);
-        System.out.println(red + " \\__/" + red);
-        System.out.println(red + "  || " + red);
-        System.out.println(red + "  || " + red);
-        System.out.println(red + " ----" + red);
+        System.out.println(red + "\\    /" + reset);
+        System.out.println(red + " \\__/" + reset);
+        System.out.println(red + "  || " + reset);
+        System.out.println(red + "  || " + reset);
+        System.out.println(red + " ----" + reset);
         System.out.println("");
         st.executeUpdate("INSERT INTO Purchase(customerId, itemId) VALUE('" + customerId + "',' 0 ');");
     }
@@ -653,7 +663,7 @@ public class HotelManagement2 {
             }
             scr.close();
         } catch (IOException IOE) {
-            System.err.println(red + "Error - cant load food menu");
+            System.out.println(red + "Error - cant load food menu" + reset);
         }
     }
 //     |
@@ -678,26 +688,26 @@ public class HotelManagement2 {
 //___________________________________________________________________________________________________________________________________/
 
     private static void hotel() {
-        System.out.println(blue + "      / \\");
-        System.out.println(blue + "    / \\  \\          v                               v");
-        System.out.println(blue + "   /   \\  \\                    v                               v");
-        System.out.println(blue + "  /     \\  /                                                                          o                                  v   ____");
-        System.out.println(blue + " /_______\\/|                           HOTEL + RESTAURANT                          -/-            v        v                /___/|");
-        System.out.println(blue + "|         | |         __________________|______________|___________________________/)                   _______________      |    ||");
-        System.out.println(blue + "|  _   _  | |        /                                                      _______/.                  /_______________/|    |    ||");
-        System.out.println(blue + "| |_| |_| | |       /________________________________________________________\\_/|      .              |  _        _  | |    |____||");
-        System.out.println(blue + "|  _   _  |/______|                    ________________                       |   |      .             | |_|      |_| | |   /     /|");
-        System.out.println(blue + "| |_| |_| |         |  _   _   _   _    | Hotel Paradise |    _   _   _   _   |   |       .            |  _        _  | |  /     / |");
-        System.out.println(blue + "|  _   _  |         | |_| |_| |_| |_|   |________________|   |_| |_| |_| |_|  |   |        .           | |_|      |_| | | /     /  |");
-        System.out.println(blue + "| |_| |_| | P-HOUSE |  _   _   _   _                          _   _   _   _   |   |      __._______    |  _        _  | |/_____|   |");
-        System.out.println(blue + "|  _   _  |         | |_| |_| |_| |_|        ______          |_| |_| |_| |_|  |   |    /  \\/      /   | |_|      |_| | |      |   |");
-        System.out.println(blue + "| |_| |_| |         |  _   _   _   _        /______/\\         _   _   _   _  |   /   /          /     |  _        _  | |      |  /|     /");
-        System.out.println(blue + "|         |   ____  | |_| |_| |_| |_|      / _____\\_/|       |_| |_| |_| |_| |  /   /          /      | |_|  __  |_| | |      | |      /");
-        System.out.println(blue + "|    _    |  |||||| |                      | |  / / ||                        | /   /__________/       |     |  |     | |      |/      /");
-        System.out.println(blue + "|___| |___|  |||||| | |____________________|_|_/ /__||________________________|/_______________________|_____|  |_____|/_______/      / ");
-        System.out.println(purple + "|                                                                                                                                  /  ");
-        System.out.println(purple + "|                                                                                                                                 /");
-        System.out.println(purple + "_________________________________________________________________________________________________________________________________/");
+        System.out.println(purple + "      / \\");
+        System.out.println(purple + "    / \\  \\          v                               v");
+        System.out.println(purple + "   /   \\  \\                    v                               v");
+        System.out.println(purple + "  /     \\  /                                                                          o                                  v   ____" + reset);
+        System.out.println(purple + " /_______\\/|                           HOTEL + RESTAURANT                          -/-            v        v                /___/|" + reset);
+        System.out.println(purple + "|         | |         __________________|______________|___________________________/)                   _______________      |    ||" + reset);
+        System.out.println(purple + "|  _   _  | |        /                                                      _______/.                  /_______________/|    |    ||" + reset);
+        System.out.println(purple + "| |_| |_| | |       /________________________________________________________\\_/|      .              |  _        _  | |    |____||" + reset);
+        System.out.println(purple + "|  _   _  |/______|                    ________________                       |   |      .             | |_|      |_| | |   /     /|" + reset);
+        System.out.println(purple + "| |_| |_| |         |  _   _   _   _    | Hotel Paradise |    _   _   _   _   |   |       .            |  _        _  | |  /     / |" + reset);
+        System.out.println(purple + "|  _   _  |         | |_| |_| |_| |_|   |________________|   |_| |_| |_| |_|  |   |        .           | |_|      |_| | | /     /  |" + reset);
+        System.out.println(purple + "| |_| |_| | P-HOUSE |  _   _   _   _                          _   _   _   _   |   |      __._______    |  _        _  | |/_____|   |" + reset);
+        System.out.println(purple + "|  _   _  |         | |_| |_| |_| |_|        ______          |_| |_| |_| |_|  |   |    /  \\/      /   | |_|      |_| | |      |   |" + reset);
+        System.out.println(purple + "| |_| |_| |         |  _   _   _   _        /______/\\         _   _   _   _  |   /   /          /     |  _        _  | |      |  /|     /" + reset);
+        System.out.println(purple + "|         |   ____  | |_| |_| |_| |_|      / _____\\_/|       |_| |_| |_| |_| |  /   /          /      | |_|  __  |_| | |      | |      /" + reset);
+        System.out.println(purple + "|    _    |  |||||| |                      | |  / / | |                        | /   /__________/       |     |  |     | |      |/      /" + reset);
+        System.out.println(purple + "|___| |___|  |||||| | |____________________|_|_/ /__|_|________________________|/_______________________|_____|  |_____|/_______/      / " + reset);
+        System.out.println(purple + "|                                                                                                                                  /  " + reset);
+        System.out.println(purple + "|                                                                                                                                 /" + reset);
+        System.out.println(purple + "_________________________________________________________________________________________________________________________________/" + reset);
     }
 
     private static void roomType() {
@@ -710,7 +720,7 @@ public class HotelManagement2 {
             }
             scr.close();
         } catch (IOException IOE) {
-            System.err.println(red + "Error");
+            System.out.println(red + "Error" + reset);
         }
     }
 }
